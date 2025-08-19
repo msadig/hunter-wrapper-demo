@@ -1,0 +1,5 @@
+mypy
+types-requests
+wemake-python-styleguide==0.19.2
+flake8
+pre-commit

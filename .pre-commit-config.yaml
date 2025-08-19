@@ -1,0 +1,77 @@
+# Pre-commit hooks for code quality enforcement
+# Ensures all code complies with wemake-python-styleguide before commit
+
+repos:
+  # General file fixes
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        name: Fix trailing whitespace
+      - id: end-of-file-fixer
+        name: Fix missing newline at EOF
+      - id: check-yaml
+        name: Check YAML syntax
+      - id: check-added-large-files
+        name: Check for large files
+        args: ['--maxkb=500']
+      - id: check-merge-conflict
+        name: Check for merge conflicts
+      - id: debug-statements
+        name: Check for debug statements
+
+  # Import sorting with isort
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        name: Sort imports with isort
+        args: ['--settings-path=setup.cfg']
+
+  # Type checking with mypy
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.8.0
+    hooks:
+      - id: mypy
+        name: Type check with mypy
+        args: ['--config-file=mypy.ini']
+        additional_dependencies:
+          - types-requests>=2.31.0
+          - django-stubs>=5.0.0
+          - pydantic>=2.0.0
+        exclude: '^tests/'
+
+  # Linting with flake8 and wemake-python-styleguide
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.0.0
+    hooks:
+      - id: flake8
+        name: Lint with wemake-python-styleguide
+        additional_dependencies:
+          - wemake-python-styleguide==0.19.2
+          - flake8-bugbear
+          - flake8-docstrings
+          - flake8-eradicate
+          - flake8-isort
+          - flake8-quotes
+          - flake8-rst-docstrings
+          - flake8-string-format
+          - pep8-naming
+          - darglint
+        args: ['--config=setup.cfg']
+
+default_language_version:
+  python: python3
+
+default_stages: [pre-commit]
+exclude: |
+  (?x)^(
+    .*\.egg-info/.*|
+    \.git/.*|
+    \.tox/.*|
+    \.venv/.*|
+    build/.*|
+    dist/.*|
+    docs/.*|
+    migrations/.*
+  )$
