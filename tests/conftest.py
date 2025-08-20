@@ -11,7 +11,7 @@ from hunter_wrapper.client import HunterClient
 load_dotenv()
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='session', name='hunter_key')
 def hunter_api_key() -> str:
     """Get Hunter API key from environment.
 
@@ -34,17 +34,17 @@ def hunter_api_key() -> str:
 
 
 @pytest.fixture(scope='session', name='hunter_client')
-def create_hunter_client(hunter_api_key: str) -> HunterClient:  # noqa: WPS442
+def create_hunter_client(hunter_key: str) -> HunterClient:
     """Create a HunterClient instance for testing.
 
     Args:
-        hunter_api_key: The Hunter API key from fixture.
+        hunter_key: The Hunter API key from fixture.
 
     Returns:
         A configured HunterClient instance.
 
     """
-    return HunterClient(api_key=hunter_api_key)
+    return HunterClient(api_key=hunter_key)
 
 
 @pytest.fixture
