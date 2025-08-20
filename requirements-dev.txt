@@ -3,3 +3,7 @@ types-requests
 wemake-python-styleguide==0.19.2
 flake8
 pre-commit
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.11.1
+python-dotenv>=1.0.0
