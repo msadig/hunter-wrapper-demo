@@ -25,14 +25,6 @@ repos:
         name: Fix mixed line endings
         args: ['--fix=lf']
 
-  # Python syntax upgrades
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v3.15.0
-    hooks:
-      - id: pyupgrade
-        name: Upgrade Python syntax
-        args: ['--py311-plus']
-
   # Remove unused imports and variables
   - repo: https://github.com/PyCQA/autoflake
     rev: v2.2.1
