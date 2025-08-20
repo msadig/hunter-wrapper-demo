@@ -101,7 +101,7 @@ isort hunter_wrapper/
 
 ## CI/CD Pipeline
 
-Automated workflows ensure code quality and reliability on every push and pull request to the main branch.
+Automated workflows ensure code quality and reliability on every push and pull request to the main branch: [Check Actions](https://github.com/msadig/hunter-wrapper-demo/actions)
 
 ### What We Protect Against
 
