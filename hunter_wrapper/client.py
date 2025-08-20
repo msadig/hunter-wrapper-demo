@@ -25,7 +25,7 @@ class HunterClient:
         self.base_params = {'api_key': api_key}
         self.base_endpoint = 'https://api.hunter.io/v2/{endpoint}'
 
-    def email_verifier(self, email: str, raw: bool = False) -> dict:
+    def email_verifier(self, email: str, raw: bool = False) -> dict | requests.Response:
         """Verify the deliverability of a given email address.
 
         Args:
@@ -33,7 +33,8 @@ class HunterClient:
             raw: If True, returns the entire response instead of just the 'data'.
 
         Returns:
-            Full payload of the query as a dict.
+            If raw is True: requests.Response object.
+            If raw is False: Email verification data as dict.
 
         """
         query_params = {'email': email, 'api_key': self.api_key}
@@ -50,16 +51,18 @@ class HunterClient:
         company: str | None = None,
         raw: bool = False,
         **kwargs,
-    ) -> dict:
+    ) -> dict | requests.Response:
         """Return all the email addresses found for a given domain.
 
         Args:
             domain: The domain on which to search for emails. Must be defined if company is not.
             company: The name of the company on which to search for emails. Must be defined if domain is not.
             raw: If True, returns the entire response instead of just the 'data'.
+            kwargs: Optional parameters (limit, offset, seniority, department, emails_type).
 
         Returns:
-            Full payload of the query as a dict, with email addresses found.
+            If raw is True: requests.Response object.
+            If raw is False: Domain search data as dict with email addresses found.
 
         Raises:
             MissingCompanyError: If neither domain nor company is provided.
@@ -87,17 +90,22 @@ class HunterClient:
         company: str | None = None,
         raw: bool = False,
         **name_params,
-    ) -> dict | tuple[str, int]:
+    ) -> requests.Response | tuple[str, int]:
         """Find the email address of a person given its name and company's domain.
 
         Args:
             domain: The domain of the company where the person works. Must be defined if company is not.
             company: The name of the company where the person works. Must be defined if domain is not.
             raw: If True, returns the entire response instead of just email and score.
+            name_params: Name parameters (first_name, last_name, or full_name).
 
         Returns:
-            If raw is True: Full API response as dict.
+            If raw is True: requests.Response object.
             If raw is False: Tuple of (email, score).
+
+        Raises:
+            MissingCompanyError: If neither domain nor company is provided.
+            MissingNameError: If name information is insufficient.  # noqa: DAR402
 
         """
         query_parameters = self.base_params.copy()
@@ -113,25 +121,29 @@ class HunterClient:
             query_parameters['company'] = company
 
         # Validate and add name parameters
-        self._add_name_params(query_parameters, name_params)
+        self._validate_and_add_name_params(query_parameters, name_params)
 
         endpoint = self.base_endpoint.format(endpoint='email-finder')
 
         response = self._query_hunter(endpoint, query_parameters, raw=raw)
         if raw:
+            # Type narrowing: when raw=True, response is requests.Response
+            assert isinstance(response, requests.Response)
             return response
 
+        # Type narrowing: when raw=False, response is dict
+        assert isinstance(response, dict)
         email = response['email']
         score = response['score']
 
         return email, score
 
-    def _add_name_params(
+    def _validate_and_add_name_params(
         self,
         query_parameters: dict,
         name_params: dict,
     ) -> None:
-        """Add name parameters to the query.
+        """Validate and add name parameters to the query.
 
         Args:
             query_parameters: The query parameters dict to update.
@@ -189,7 +201,7 @@ class HunterClient:
         query_params: dict,
         request_type: str = 'get',
         raw: bool = False,
-    ) -> dict:
+    ) -> dict | requests.Response:
         """Make a request to the Hunter.io API.
 
         Args:
@@ -199,7 +211,8 @@ class HunterClient:
             raw: If True, return the raw response.
 
         Returns:
-            API response data or raw response.
+            If raw is True: requests.Response object.
+            If raw is False: API response data as dict.
 
         Raises:
             HunterAPIError: If the API returns an error.
