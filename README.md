@@ -17,6 +17,7 @@ Table of Contents:
 - Email Verifier - Verify if an email address exists
 - Full type hints with mypy strict mode
 - Strict linting with wemake-python-styleguide
+- Pre-commit hooks that automatically check code quality before commits
 
 ## Installation
 
