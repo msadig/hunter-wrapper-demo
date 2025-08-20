@@ -4,7 +4,7 @@
 repos:
   # General file fixes
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
         name: Fix trailing whitespace
@@ -27,7 +27,7 @@ repos:
 
   # Remove unused imports and variables
   - repo: https://github.com/PyCQA/autoflake
-    rev: v2.2.1
+    rev: v2.3.1
     hooks:
       - id: autoflake
         name: Remove unused imports and variables
@@ -40,7 +40,7 @@ repos:
 
   # Add trailing commas
   - repo: https://github.com/asottile/add-trailing-comma
-    rev: v3.1.0
+    rev: v3.2.0
     hooks:
       - id: add-trailing-comma
         name: Add trailing commas
@@ -48,7 +48,7 @@ repos:
 
   # Fix specific PEP8 issues
   - repo: https://github.com/hhatto/autopep8
-    rev: v2.0.4
+    rev: v2.3.2
     hooks:
       - id: autopep8
         name: Fix whitespace and formatting issues
@@ -59,7 +59,7 @@ repos:
 
   # Import sorting with isort
   - repo: https://github.com/pycqa/isort
-    rev: 5.13.2
+    rev: 6.0.1
     hooks:
       - id: isort
         name: Sort imports with isort
@@ -67,7 +67,7 @@ repos:
 
   # Type checking with mypy
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.8.0
+    rev: v1.17.1
     hooks:
       - id: mypy
         name: Type check with mypy
@@ -80,7 +80,7 @@ repos:
 
   # Linting with flake8 and wemake-python-styleguide
   - repo: https://github.com/pycqa/flake8
-    rev: 7.0.0
+    rev: 7.3.0
     hooks:
       - id: flake8
         name: Lint with wemake-python-styleguide
