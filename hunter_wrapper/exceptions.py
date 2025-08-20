@@ -13,3 +13,11 @@ class HunterAPIError(Exception):
         """
         super().__init__(message)
         self.message = message
+
+
+class MissingNameError(HunterAPIError):
+    """Exception raised when a name is missing for email finding."""
+
+
+class MissingCompanyError(HunterAPIError):
+    """Exception raised when a company is missing for email finding."""
