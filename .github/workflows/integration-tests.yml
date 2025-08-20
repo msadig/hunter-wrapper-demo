@@ -51,7 +51,7 @@ jobs:
 
       - name: Run integration tests with coverage
         env:
-          HUNTER_API_KEY: ${{ secrets.HUNTER_API_KEY }}
+          HUNTER_API_KEY: ${{ vars.HUNTER_API_KEY }}
         run: |
           # Run integration tests with coverage report
           pytest tests/integration/ --cov=hunter_wrapper --cov-report=term-missing --cov-report=xml
