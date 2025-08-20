@@ -19,6 +19,51 @@ repos:
         name: Check for merge conflicts
       - id: debug-statements
         name: Check for debug statements
+      - id: fix-byte-order-marker
+        name: Fix BOM
+      - id: mixed-line-ending
+        name: Fix mixed line endings
+        args: ['--fix=lf']
+
+  # Python syntax upgrades
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.15.0
+    hooks:
+      - id: pyupgrade
+        name: Upgrade Python syntax
+        args: ['--py311-plus']
+
+  # Remove unused imports and variables
+  - repo: https://github.com/PyCQA/autoflake
+    rev: v2.2.1
+    hooks:
+      - id: autoflake
+        name: Remove unused imports and variables
+        args:
+          - '--in-place'
+          - '--remove-all-unused-imports'
+          - '--remove-unused-variables'
+          - '--remove-duplicate-keys'
+          - '--ignore-init-module-imports'
+
+  # Add trailing commas
+  - repo: https://github.com/asottile/add-trailing-comma
+    rev: v3.1.0
+    hooks:
+      - id: add-trailing-comma
+        name: Add trailing commas
+        args: ['--py36-plus']
+
+  # Fix specific PEP8 issues
+  - repo: https://github.com/hhatto/autopep8
+    rev: v2.0.4
+    hooks:
+      - id: autopep8
+        name: Fix whitespace and formatting issues
+        args:
+          - '--in-place'
+          - '--select=E275,E302,E303,E304,E305,W291,W292,W293'
+          - '--max-line-length=120'
 
   # Import sorting with isort
   - repo: https://github.com/pycqa/isort
